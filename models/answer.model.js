@@ -7,6 +7,6 @@ let answerSchema = mongoose.Schema({
     is_correct: {type: Boolean, required: "You must specifiy the status of the answer"},
 })
 
-
+answerSchema.index({ title: 1, question_id: 1 }, { unique: true });
 
 module.exports = mongoose.model('Answer', answerSchema);

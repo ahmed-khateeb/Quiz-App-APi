@@ -7,7 +7,6 @@ let quizSchema = mongoose.Schema({
     user_id: { type: ObjectId, ref: "User", required: "User_Id is required" },
 })
 
-
-
+quizSchema.index({ title: 1, user_id: 1 }, { unique: true });
 
 module.exports = mongoose.model('Quiz', quizSchema);

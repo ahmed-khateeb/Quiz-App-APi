@@ -4,21 +4,23 @@ const express = require("express"),
     bodyParser = require("body-parser"),
     morgan = require("morgan"),
     mongoose = require("mongoose"),
+    // Routes
     userRoutes = require("./routes/userRoutes"),
+    quizRoutes = require("./routes/quizRoutes"),
 
     authenticate = require("./middleware/jwt");
     server = express();
 
-mongoose.connect(
-    "mongodb://localhost:27017/3D_Quiz",
-    { useNewUrlParser: true })
-    .then(() => { // if all is ok we will be here
-
-    })
-    .catch(err => { // we will not be here...
-        console.error('App starting error:', err.stack);
-        process.exit(1);
-    });
+    mongoose.connect(
+        "mongodb://localhost:27017/3D_Quiz",
+        { useNewUrlParser: true },
+        error => {
+            if (error) {
+                console.log("DB Connection Error " + error);
+            }
+        }
+    );
+mongoose.set('useCreateIndex', true);
 
 server.use(morgan("short"));
 server.use(cors({ origin: true }));
@@ -30,6 +32,8 @@ server.use("/user", userRoutes);
 // Authentication midleware
 server.use(authenticate);
 
+
+server.use("/quiz", quizRoutes);
 server.use((err, req, res, next) => {
     console.log(err);
     if (err.name === 'ValidationError') {
