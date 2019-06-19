@@ -1,40 +1,41 @@
 let express = require("express"),
 
 // add Mergeparams to access params from the parent router
-    answerRoutes = express.Router({mergeParams: true});
+    answerRoutes = express.Router();
 
 // =============================================
 
 let answerSchema = require('../models/answer.model');
 
-let check_question = require("../middleware/question");
+let check_question = require("../middleware/question"),
+    has_correct_answer = require("../middleware/hasCorrectAnswer");
 
 answerRoutes.use(check_question);
 
-answerRoutes.post("/create", (req, res, next) => {
+answerRoutes.post("/create", has_correct_answer , (req, res, next) => {
     console.log(req.body);
     let answer = {
         title: req.body.title,
-        question_id: req.params.questionId,
+        question_id: req.body.question_id,
         is_correct: req.body.is_correct
     };
     answer = answerSchema(answer);
     answer.save((err, answer) => {
         if (!err) {
-            res.status(200).send(answer);
+            return res.status(200).send(answer);
         } else {
             console.log(err)
             if (err.code == 11000)
-                res.status(409).json({ message: 'This Answer is already in this Question answers'});
+                return res.status(409).json({ message: 'This Answer is already in this Question answers'});
             else
-                return next(err);
+                res.send(err)
         }
     })
 })
 
 // get Answers of the Question
-answerRoutes.get("", (req, res) => {
-    answerSchema.find({question_id: req.params.questionId}, (err, result) => {
+answerRoutes.post("/get", (req, res) => {
+    answerSchema.find({question_id: req.body.question_id}, (err, result) => {
         console.log(result)
         if (err) {
             console.log(err);

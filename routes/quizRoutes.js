@@ -3,10 +3,7 @@ let express = require("express"),
 
 // =============================================
 
-let quizSchema = require('../models/quiz.model'),
-    userSchema = require("../models/user.model"),
-
-    questionRouter = require("./questionRoutes");
+let quizSchema = require('../models/quiz.model');
 
 let check_teacher = require("../middleware/teacher");
 
@@ -55,7 +52,6 @@ quizRoutes.post("/create", (req, res, next) => {
 // get Teacher pending Quizzes
 quizRoutes.get("/pending", (req, res) => {
     quizSchema.find({user_id: req._id, status: "pending"}, (err, result) => {
-        console.log(result)
         if (err) {
             console.log(err);
             res.status(404).send(err);
@@ -69,7 +65,6 @@ quizRoutes.get("/pending", (req, res) => {
 // get Teacher published Quizzes
 quizRoutes.get("/published", (req, res) => {
     quizSchema.find({user_id: req._id, status: "published"}, (err, result) => {
-        console.log(result)
         if (err) {
             console.log(err);
             res.status(404).send(err);
@@ -80,14 +75,26 @@ quizRoutes.get("/published", (req, res) => {
     })
 })
 
+//Get Quiz By ID 
+quizRoutes.get("/:id", (req, res) => {
+    quizSchema.findById(req.params.id, (err, result) => {
+        if (!err) {
+            res.status(200).send(result);
+        }
+        else {
+            console.log(err);
+            return res.send(err);
+        }
+    })
+})
+
 quizRoutes.put("/updateStatus", (req, res, next) => {
     console.log(req.body);
-    quizSchema.update({ _id: req.body._id },
+    quizSchema.update({ _id: req.body.quiz_id },
         {status: "published"} , err => {
             if (!err) {
-                quizSchema.findOne({_id:req.body._id}, (err, result) => {
+                quizSchema.findOne({_id:req.body.quiz_id}, (err, result) => {
                     if (!err) {
-                        console.log(result);
                         res.status(200).send(result);
                     }
                     else {
@@ -103,8 +110,5 @@ quizRoutes.put("/updateStatus", (req, res, next) => {
         })
 })
 
-// Question Nested Routes
-
-quizRoutes.use('/:quizId/questions', questionRouter);
 
 module.exports = quizRoutes;

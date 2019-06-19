@@ -7,6 +7,8 @@ const express = require("express"),
     // Routes
     userRoutes = require("./routes/userRoutes"),
     quizRoutes = require("./routes/quizRoutes"),
+    questionRouter = require("./routes/questionRoutes"),
+    answerRouter = require("./routes/answerRoutes"),
 
     authenticate = require("./middleware/jwt");
     server = express();
@@ -34,6 +36,8 @@ server.use(authenticate);
 
 
 server.use("/quiz", quizRoutes);
+server.use("/questions", questionRouter);
+server.use("/answers", answerRouter);
 server.use((err, req, res, next) => {
     console.log(err);
     if (err.name === 'ValidationError') {

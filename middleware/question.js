@@ -1,8 +1,8 @@
 let questionSchema = require("../models/question.model");
 check_question = (req,res,next) => {
-    questionSchema.findById(req.params.questionId, (err, question) => {
+    questionSchema.findById(req.body.question_id, (err, question) => {
         if(!question) {
-            res.status(422).json({ message: 'This Quiz Not Found'});
+            res.status(422).json({ message: 'This Question Not Found'});
         }
         else {
             next();

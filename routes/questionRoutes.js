@@ -1,23 +1,40 @@
 let express = require("express"),
 
-// add Mergeparams to access params from the parent router
-    questionRoutes = express.Router({mergeParams: true});
+    questionRoutes = express.Router();
 
 // =============================================
 
 let questionSchema = require('../models/question.model'),
+    answerSchema = require('../models/answer.model'),
 
     answerRouter = require("./answerRoutes");
 
 let check_quiz = require("../middleware/quiz");
 
+
+questionRoutes.get("/:id/hasCorrectAnswer", (req, res) => {
+    answerSchema.findOne({question_id: req.params.id, is_correct: true},
+        (err, result) => {
+            if(result) {
+                return res.status(200).json({hasCorrect: true})
+            }
+            else {
+                if(err) {
+                    res.send(err)
+                }
+                return res.status(200).json({hasCorrect: false})
+            }
+        })
+})
+
+// Add The Middleware
 questionRoutes.use(check_quiz);
 
 questionRoutes.post("/create", (req, res, next) => {
     console.log(req.body);
     let question = {
         title: req.body.title,
-        quiz_id: req.params.quizId,
+        quiz_id: req.body.quiz_id,
     };
     question = questionSchema(question);
     question.save((err, question) => {
@@ -34,8 +51,9 @@ questionRoutes.post("/create", (req, res, next) => {
 })
 
 // get Questions of the Quiz
-questionRoutes.get("", (req, res) => {
-    questionSchema.find({quiz_id: req.params.quizId}, (err, result) => {
+questionRoutes.post("/get", (req, res) => {
+    console.log(req.body)
+    questionSchema.find({quiz_id: req.body.quiz_id}, (err, result) => {
         console.log(result)
         if (err) {
             console.log(err);
@@ -49,10 +67,10 @@ questionRoutes.get("", (req, res) => {
 
 questionRoutes.put("/update", (req, res, next) => {
     console.log(req.body);
-    questionSchema.update({ _id: req.body._id },
+    questionSchema.update({ _id: req.body.question_id },
         {title: req.body.title} , err => {
             if (!err) {
-                questionSchema.findOne({_id:req.body._id}, (err, result) => {
+                questionSchema.findOne({_id:req.body.question_id}, (err, result) => {
                     if (!err) {
                         console.log(result);
                         res.status(200).send(result);
@@ -87,9 +105,5 @@ questionRoutes.delete("", (req, res) => {
         }
     })
 })
-
-// Question Nested Routes
-
-questionRoutes.use('/:questionId/answers', answerRouter);
 
 module.exports = questionRoutes;
