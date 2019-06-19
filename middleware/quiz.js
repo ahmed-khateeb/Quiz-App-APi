@@ -3,7 +3,7 @@ check_quiz = (req,res,next) => {
     console.log(req.body)
     quizSchema.findById(req.body.quiz_id, (err, quiz) => {
         if(!quiz) {
-            res.status(422).json({ message: 'This Quiz Not Found'});
+            res.status(404).json({ message: 'This Quiz Not Found'});
         }
         else {
             next();

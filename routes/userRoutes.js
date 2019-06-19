@@ -25,7 +25,7 @@ userRoutes.post("/signup", (request, response, next) => {
         user = new studentSchema(user);
     }
     else {
-        return response.status(422).json({ message: "Invalid User Type"});
+        return response.status(403).json({ message: "Invalid User Type"});
     }
     user.save((err, user) => {
         if (!err) {
@@ -33,7 +33,7 @@ userRoutes.post("/signup", (request, response, next) => {
         } else {
             console.log(err);
             if (err.code == 11000)
-                response.status(422).json({ message: 'Email already exist With that rule'});
+                response.status(409).json({ message: 'Email already exist With that rule'});
             else
                 return next(err);
         }

@@ -15,7 +15,7 @@ let check_question = require("../middleware/question"),
 answerRoutes.delete("/:id", (req, res) => {
     answerSchema.findById(req.params.id, (err, answer) => {
         if(!answer) {
-            res.status(422).json({ message: 'This Answer is Not Found'});
+            res.status(404).json({ message: 'This Answer is Not Found'});
         }
         else {
             answerSchema.deleteOne({_id: req.params.id}, (err) => {

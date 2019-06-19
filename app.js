@@ -14,8 +14,8 @@ const express = require("express"),
     server = express();
 
     mongoose.connect(
-        "mongodb://localhost:27017/3D_Quiz",
-        //"mongodb+srv://ahmed:sasuke1234@cluster0-fjjjl.mongodb.net/test?retryWrites=true",
+        //"mongodb://localhost:27017/3D_Quiz",
+        "mongodb+srv://ahmad:123_456@cluster0-zcfdh.mongodb.net/test?retryWrites=true&w=majority",
         { useNewUrlParser: true },
         error => {
             if (error) {
