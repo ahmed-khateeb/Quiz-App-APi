@@ -3,7 +3,8 @@ let express = require("express"),
 
 // =============================================
 
-let quizSchema = require('../models/quiz.model');
+let quizSchema = require('../models/quiz.model'),
+    questionSchema = require('../models/question.model');
 
 let check_teacher = require("../middleware/teacher");
 
@@ -110,5 +111,22 @@ quizRoutes.put("/updateStatus", (req, res, next) => {
         })
 })
 
-
+quizRoutes.delete("/:id", (req,res,next) => {
+    quizSchema.findById(req.params.id, (err, result) => {
+        if (!err) {
+            console.log(result)
+            questionSchema.remove({quiz_id: result._id}, err=>{
+                if(err){
+                    res.send(err)
+                }
+                result.remove();
+                res.status(200).json({ message: 'Cascade Deletion Success'});
+            });
+        }
+        else {
+            console.log(err);
+            return res.send(err);
+        }
+    })
+})
 module.exports = quizRoutes;

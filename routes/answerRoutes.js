@@ -10,6 +10,26 @@ let answerSchema = require('../models/answer.model');
 let check_question = require("../middleware/question"),
     has_correct_answer = require("../middleware/hasCorrectAnswer");
 
+
+
+answerRoutes.delete("/:id", (req, res) => {
+    answerSchema.findById(req.params.id, (err, answer) => {
+        if(!answer) {
+            res.status(422).json({ message: 'This Answer is Not Found'});
+        }
+        else {
+            answerSchema.deleteOne({_id: req.params.id}, (err) => {
+                if(!err) {
+                    res.status(200).json({message: "Answer Deleted Successfully"})
+                }
+                else {
+                    res.send(err)
+                }
+            })
+        }
+    })
+})
+        
 answerRoutes.use(check_question);
 
 answerRoutes.post("/create", has_correct_answer , (req, res, next) => {
@@ -70,21 +90,4 @@ answerRoutes.put("/update", (req, res, next) => {
         })
 })
 
-answerRoutes.delete("", (req, res) => {
-    answerSchema.findById(req.body.answer_id, (err, answer) => {
-        if(!answer) {
-            res.status(422).json({ message: 'This Answer is Not Found'});
-        }
-        else {
-            answerSchema.deleteOne({_id: req.body.answer_id}, (err) => {
-                if(!err) {
-                    res.status(200).json({message: "Answer Deleted Successfully"})
-                }
-                else {
-                    res.send(err)
-                }
-            })
-        }
-    })
-})
 module.exports = answerRoutes;

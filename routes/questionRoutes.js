@@ -28,9 +28,8 @@ questionRoutes.get("/:id/hasCorrectAnswer", (req, res) => {
 })
 
 // Add The Middleware
-questionRoutes.use(check_quiz);
 
-questionRoutes.post("/create", (req, res, next) => {
+questionRoutes.post("/create", check_quiz , (req, res, next) => {
     console.log(req.body);
     let question = {
         title: req.body.title,
@@ -88,20 +87,21 @@ questionRoutes.put("/update", (req, res, next) => {
         })
 })
 
-questionRoutes.delete("", (req, res) => {
-    questionSchema.findById(req.body.question_id, (err, question) => {
-        if(!question) {
-            res.status(422).json({ message: 'This Question is Not Found'});
-        }
-        else {
-            questionSchema.deleteOne({_id: req.body.question_id}, (err, question) => {
-                if(!err) {
-                    res.status(200).json({message: "Question Deleted Successfully"})
-                }
-                else {
+questionRoutes.delete("/:id", (req, res) => {
+    questionSchema.findById(req.params.id, (err, result) => {
+        if (!err) {
+            console.log(result)
+            answerSchema.remove({question_id: result._id}, err=>{
+                if(err){
                     res.send(err)
                 }
-            })
+                result.remove();
+                res.status(200).json({ message: 'Cascade Deletion Success'});
+            });
+        }
+        else {
+            console.log(err);
+            return res.send(err);
         }
     })
 })
