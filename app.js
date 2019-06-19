@@ -29,6 +29,10 @@ server.use(morgan("short"));
 server.use(cors({ origin: true }));
 server.use(bodyParser.json());
 
+//Use Angular Builded Part 
+server.use(express.static(path.join(__dirname,"dist")));
+
+
 server.use("/user", userRoutes);
 
 
@@ -48,6 +52,10 @@ server.use((err, req, res, next) => {
     }
     else
         res.status(422).send(err)
+});
+
+server.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
 server.listen(process.env.PORT || 8000,()=>{
