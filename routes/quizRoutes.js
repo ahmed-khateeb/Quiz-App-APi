@@ -25,7 +25,7 @@ quizRoutes.get("/allPublished", (req, res) => {
 })
 
 //Get Quiz By ID 
-quizRoutes.get("/:id", (req, res) => {
+quizRoutes.get("/get/:id", (req, res) => {
     quizSchema.findById(req.params.id, (err, result) => {
         if (!err) {
             res.status(200).send(result);
@@ -88,7 +88,6 @@ quizRoutes.get("/published", (req, res) => {
         }
     })
 })
-
 
 
 quizRoutes.put("/updateStatus", (req, res, next) => {

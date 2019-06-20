@@ -1037,7 +1037,7 @@ var QuizService = /** @class */ (function () {
         return this.http.post(_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].apiBaseUrl + '/quiz/create', quiz);
     };
     QuizService.prototype.findQuiz = function (quiz_id) {
-        return this.http.get(_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].apiBaseUrl + '/quiz/' + quiz_id);
+        return this.http.get(_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].apiBaseUrl + '/quiz/get/' + quiz_id);
     };
     QuizService.prototype.deleteQuiz = function (quiz_id) {
         return this.http.delete(_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].apiBaseUrl + '/quiz/' + quiz_id);
