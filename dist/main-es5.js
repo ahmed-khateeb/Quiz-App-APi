@@ -52,7 +52,7 @@ module.exports = "<div class=\"row\">\n  <div class=\"container\">\n    <div cla
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<link href=\"//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css\" rel=\"stylesheet\" id=\"bootstrap-css\">\n<script src=\"//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js\"></script>\n<script src=\"//code.jquery.com/jquery-1.11.1.min.js\"></script>\n<!------ Include the above in your HEAD tag ---------->\n\n<div *ngIf=\"question != null\" class=\"container-fluid bg-info\">\n  \n    <div class=\"modal-dialog\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n            <h3><span class=\"label label-warning\" id=\"qid\">{{ number }}</span> {{ question.title }} </h3>\n            <button *ngIf=\"role=='teacher' && quiz_status != 'published'\" (click)=\"deleteQuestion()\" class=\"btn btn-danger\" style=\"margin-top: 20px;\">Delete This Question</button>\n        </div>\n        <div class=\"modal-body\">\n\n          <div class=\"quiz\" data-toggle=\"buttons\" *ngFor=\"let answer of answers; let i = index\">\n           <label class=\"element-animation1 btn btn-lg btn-primary btn-block\">\n             <span class=\"btn-label\"><i class=\"glyphicon glyphicon-chevron-right\"></i></span>\n             <input type=\"radio\" name=\"q_answer\" value=\"1\">{{answer.title}}\n             <span *ngIf=\"role=='teacher' && answer.is_correct\" class=\"btn-label-right\"><i class=\"glyphicon glyphicon-thumbs-up\"></i></span>\n             <span *ngIf=\"role=='teacher' && !answer.is_correct\" class=\"btn-label-right\"><i class=\"glyphicon glyphicon-thumbs-down\"></i></span>\n             <span *ngIf=\"role=='teacher'\" (click)=\"removeAnswer(answer._id)\" class=\"btn-label-delete\"><i class=\"glyphicon glyphicon-remove\"></i></span>\n           </label>\n          </div>\n        </div>\n        <div class=\"modal-footer text-muted\">\n          <span id=\"answer\"></span>\n        </div>\n        <form *ngIf=\"quiz_status == 'pending'\" #answerForm1=\"ngForm\" (ngSubmit)=\"answerForm1.valid && onSubmit(answerForm1)\">\n            <div class=\"form-group\" style=\"padding: 0 10px;\">\n                <input type=\"text\" required class=\"form-control\" #title=\"ngModel\" name=\"title\"\n                 placeholder=\"Enter Quiz Name\" [(ngModel)]=\"answerTitle\">\n                 <input type=\"hidden\" name=\"question_id\" [(ngModel)]=\"question._id\">\n            </div>\n            <div style=\"padding: 0 15px;\" *ngIf=\"(answerForm1.touched || answerForm1.submitted) && title.errors\">\n                <label *ngIf=\"title.errors.required\" class=\"validation-message\">Answer is required.</label>\n            </div>\n\n            <fieldset class=\"form-group\">\n                <div class=\"row\" style=\"padding: 0 25px;\">\n                  <legend class=\"col-form-label col-sm-2 pt-0\">Type</legend>\n                  <div class=\"col-sm-10\">\n                    <div class=\"form-check\">\n                      <input class=\"form-check-input\" id=\"correct{{number}}\" type=\"radio\" required #is_correct=\"ngModel\" name=\"is_correct\" [(ngModel)]=\"correct\" value=\"true\">\n                      <label class=\"form-check-label\" for=\"correct{{number}}\" style=\"padding: 0 25px;\">\n                        Correct\n                      </label>\n                    </div>\n                    <div class=\"form-check\">\n                      <input class=\"form-check-input\" id=\"wrong{{number}}\" type=\"radio\" required #is_correct=\"ngModel\" name=\"is_correct\" [(ngModel)]=\"correct\" value=\"false\">\n                      <label class=\"form-check-label\" for=\"wrong{{number}}\" style=\"padding: 0 25px;\">\n                        Wrong\n                      </label>\n                    </div>\n                  </div>\n                </div>\n              </fieldset>\n              <div style=\"padding: 0 15px;\" *ngIf=\"(answerForm1.touched || answerForm1.submitted) && is_correct.errors\">\n                <label *ngIf=\"is_correct.errors.required\" class=\"validation-message\">Type is required.</label>\n            </div>\n            <p *ngIf=\"!hasCorrectAnswer.hasCorrect\" style=\"color: red; padding: 0 15px;\">This Question Does not have a correct answer yet</p>\n            <p style=\"color: red; padding: 0 15px;\">{{ errMsg }}</p>\n            <div class=\"col view\"><button type=\"submit\" class=\"btn btn-primary\">Add Answer</button></div>\n          </form>\n          <br>\n      </div>\n    </div>\n  \n</div>"
+module.exports = "<link href=\"//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css\" rel=\"stylesheet\" id=\"bootstrap-css\">\n<script src=\"//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js\"></script>\n<script src=\"//code.jquery.com/jquery-1.11.1.min.js\"></script>\n<!------ Include the above in your HEAD tag ---------->\n\n<div *ngIf=\"question != null\" class=\"container-fluid bg-info\">\n  \n    <div class=\"modal-dialog\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n            <h3><span class=\"label label-warning\" id=\"qid\">{{ number }}</span> {{ question.title }} </h3>\n            <button *ngIf=\"role=='teacher' && quiz_status != 'published'\" (click)=\"deleteQuestion()\" class=\"btn btn-danger\" style=\"margin-top: 20px;\">Delete This Question</button>\n        </div>\n        <div class=\"modal-body\">\n\n          <div class=\"quiz\" data-toggle=\"buttons\" *ngFor=\"let answer of answers; let i = index\">\n           <label class=\"element-animation1 btn btn-lg btn-primary btn-block\">\n             <span class=\"btn-label\"><i class=\"glyphicon glyphicon-chevron-right\"></i></span>\n             <input type=\"radio\" name=\"q_answer\" value=\"1\">{{answer.title}}\n             <span *ngIf=\"role=='teacher' && answer.is_correct\" class=\"btn-label-right\"><i class=\"glyphicon glyphicon-thumbs-up\"></i></span>\n             <span *ngIf=\"role=='teacher' && !answer.is_correct\" class=\"btn-label-right\"><i class=\"glyphicon glyphicon-thumbs-down\"></i></span>\n             <span *ngIf=\"role=='teacher' && quiz_status=='pending'\" (click)=\"removeAnswer(answer._id)\" class=\"btn-label-delete\"><i class=\"glyphicon glyphicon-remove\"></i></span>\n           </label>\n          </div>\n        </div>\n        <div class=\"modal-footer text-muted\">\n          <span id=\"answer\"></span>\n        </div>\n        <form *ngIf=\"quiz_status == 'pending'\" #answerForm1=\"ngForm\" (ngSubmit)=\"answerForm1.valid && onSubmit(answerForm1)\">\n            <div class=\"form-group\" style=\"padding: 0 10px;\">\n                <input type=\"text\" required class=\"form-control\" #title=\"ngModel\" name=\"title\"\n                 placeholder=\"Enter Quiz Name\" [(ngModel)]=\"answerTitle\">\n                 <input type=\"hidden\" name=\"question_id\" [(ngModel)]=\"question._id\">\n            </div>\n            <div style=\"padding: 0 15px;\" *ngIf=\"(answerForm1.touched || answerForm1.submitted) && title.errors\">\n                <label *ngIf=\"title.errors.required\" class=\"validation-message\">Answer is required.</label>\n            </div>\n\n            <fieldset class=\"form-group\">\n                <div class=\"row\" style=\"padding: 0 25px;\">\n                  <legend class=\"col-form-label col-sm-2 pt-0\">Type</legend>\n                  <div class=\"col-sm-10\">\n                    <div class=\"form-check\">\n                      <input class=\"form-check-input\" id=\"correct{{number}}\" type=\"radio\" required #is_correct=\"ngModel\" name=\"is_correct\" [(ngModel)]=\"correct\" value=\"true\">\n                      <label class=\"form-check-label\" for=\"correct{{number}}\" style=\"padding: 0 25px;\">\n                        Correct\n                      </label>\n                    </div>\n                    <div class=\"form-check\">\n                      <input class=\"form-check-input\" id=\"wrong{{number}}\" type=\"radio\" required #is_correct=\"ngModel\" name=\"is_correct\" [(ngModel)]=\"correct\" value=\"false\">\n                      <label class=\"form-check-label\" for=\"wrong{{number}}\" style=\"padding: 0 25px;\">\n                        Wrong\n                      </label>\n                    </div>\n                  </div>\n                </div>\n              </fieldset>\n              <div style=\"padding: 0 15px;\" *ngIf=\"(answerForm1.touched || answerForm1.submitted) && is_correct.errors\">\n                <label *ngIf=\"is_correct.errors.required\" class=\"validation-message\">Type is required.</label>\n            </div>\n            <p *ngIf=\"!hasCorrectAnswer.hasCorrect\" style=\"color: red; padding: 0 15px;\">This Question Does not have a correct answer yet</p>\n            <p style=\"color: red; padding: 0 15px;\">{{ errMsg }}</p>\n            <div class=\"col view\"><button type=\"submit\" class=\"btn btn-primary\">Add Answer</button></div>\n          </form>\n          <br>\n      </div>\n    </div>\n  \n</div>"
 
 /***/ }),
 
@@ -63,7 +63,7 @@ module.exports = "<link href=\"//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/boo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<link href=\"//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css\" rel=\"stylesheet\" id=\"bootstrap-css\">\n<script src=\"//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js\"></script>\n<script src=\"//code.jquery.com/jquery-1.11.1.min.js\"></script>\n<!------ Include the above in your HEAD tag ---------->\n<nav class=\"navbar navbar-dark bg-dark navbar-expand-sm\">\n  <a class=\"navbar-brand\" style=\"margin-bottom: 20px;\" href=\"javascript:void()\">\n    <img src=\"https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/logo_white.png\" width=\"30\" height=\"30\" alt=\"logo\">\n    <span>Quiz App</span>\n  </a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbar-list-2\" aria-controls=\"navbarNav\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbar-list-2\">\n    <ul class=\"navbar-nav\">\n      <li class=\"nav-item active\">\n        <a class=\"nav-link\" routerLink=\"/user\" routerLinkActive=\"active\">Home <span class=\"sr-only\">(current)</span></a>\n      </li>\n      <li class=\"nav-item\">\n          <a class=\"nav-link\" href=\"javascript:void()\"></a>\n        </li>\n    </ul>\n  </div>\n  <div class=\"navbar-nav actions\"><a class=\"nav-link\" (click)=\"Logout()\" href=\"javascript:void()\">Logout</a></div>\n</nav>\n<div class=\"container-fluid bg-info\">\n    <div class=\"modal-dialog\" *ngIf=\"quiz.status == 'pending'\">\n        <div class=\"modal-content\">\n           <div class=\"modal-header\">\n              <h3><span class=\"label label-warning\" id=\"qid\">+</span> Add New Question</h3>\n          </div>\n          <div class=\"modal-body\">\n  \n              <ul class=\"list-group\">\n                  <li class=\"list-group-item\">\n                      <div class=\"row no-gutters\">\n                          <div class=\"col\">\n                              <div class=\"row\">\n                                  <div class=\"col\">\n                                    <form #questionForm=\"ngForm\" (ngSubmit)=\"questionForm.valid && onSubmit(questionForm)\">\n                                      <div class=\"form-group\">\n                                          <input type=\"text\" required class=\"form-control\" #title=\"ngModel\" name=\"title\"\n                                           placeholder=\"Enter Question Body\" [(ngModel)]=\"quizTitle\">\n                                           <input type=\"hidden\" name=\"quiz_id\" [(ngModel)]=\"quiz_id\">\n                                      </div>\n                                      <div *ngIf=\"(questionForm.touched || questionForm.submitted) && title.errors\">\n                                          <label *ngIf=\"title.errors.required\" class=\"validation-message\"> Question Body is required.</label>\n                                      </div>\n                                      <p style=\"color: red; padding: 0 15px;\">\n                                        {{ errMsg }}\n                                      </p>\n                                      <div class=\"col view\"><button type=\"submit\" class=\"btn btn-primary\">Add</button></div>\n                                    </form>    \n                                  </div>                \n                              </div>\n                          </div>\n                          \n                      </div>\n                  </li>\n              </ul>\n            <br>\n            <div>\n              <p style=\"font-size: 17px; color:green\">Quiz Status : {{ quiz.status }}</p>\n              <div class=\"col view\"><button (click)=\"publish()\" class=\"btn btn-warning\">Publish</button></div>\n            </div>\n            <br>\n            <!-- <p style=\"font-size: 15px; color:red\">This quiz Can't be published. There is Question Wtih no correct answers given</p> -->\n        </div>    \n      </div> \n    </div>\n    <div *ngFor=\"let question of quiz_questions; let i = index\">\n      <app-question [question]=\"question\" [number]=\"i+1\" [quiz_status]=\"quiz.status\"></app-question>\n    </div>\n</div>"
+module.exports = "<link href=\"//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css\" rel=\"stylesheet\" id=\"bootstrap-css\">\n<script src=\"//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js\"></script>\n<script src=\"//code.jquery.com/jquery-1.11.1.min.js\"></script>\n<!------ Include the above in your HEAD tag ---------->\n<nav class=\"navbar navbar-dark bg-dark navbar-expand-sm\">\n  <a class=\"navbar-brand\" style=\"margin-bottom: 20px;\" href=\"javascript:void()\">\n    <img src=\"https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/logo_white.png\" width=\"30\" height=\"30\" alt=\"logo\">\n    <span>Quiz App</span>\n  </a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbar-list-2\" aria-controls=\"navbarNav\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbar-list-2\">\n    <ul class=\"navbar-nav\">\n      <li class=\"nav-item active\">\n        <a class=\"nav-link\" routerLink=\"/user\" routerLinkActive=\"active\">Home <span class=\"sr-only\">(current)</span></a>\n      </li>\n      <li class=\"nav-item\">\n          <a class=\"nav-link\" href=\"javascript:void()\"></a>\n        </li>\n    </ul>\n  </div>\n  <div class=\"navbar-nav actions\"><a class=\"nav-link\" (click)=\"Logout()\" href=\"javascript:void()\">Logout</a></div>\n</nav>\n<div class=\"container-fluid bg-info\">\n    <div class=\"modal-dialog\" *ngIf=\"quiz.status == 'pending'\">\n        <div class=\"modal-content\">\n           <div class=\"modal-header\">\n              <h3><span class=\"label label-warning\" id=\"qid\">+</span> Add New Question</h3>\n          </div>\n          <div class=\"modal-body\">\n  \n              <ul class=\"list-group\">\n                  <li class=\"list-group-item\">\n                      <div class=\"row no-gutters\">\n                          <div class=\"col\">\n                              <div class=\"row\">\n                                  <div class=\"col\">\n                                    <form #questionForm=\"ngForm\" (ngSubmit)=\"questionForm.valid && onSubmit(questionForm)\">\n                                      <div class=\"form-group\">\n                                          <input type=\"text\" required class=\"form-control\" #title=\"ngModel\" name=\"title\"\n                                           placeholder=\"Enter Question Body\" [(ngModel)]=\"quizTitle\">\n                                           <input type=\"hidden\" name=\"quiz_id\" [(ngModel)]=\"quiz_id\">\n                                      </div>\n                                      <div *ngIf=\"(questionForm.touched || questionForm.submitted) && title.errors\">\n                                          <label *ngIf=\"title.errors.required\" class=\"validation-message\"> Question Body is required.</label>\n                                      </div>\n                                      <p style=\"color: red; padding: 0 15px;\">\n                                        {{ errMsg }}\n                                      </p>\n                                      <div class=\"col view\"><button type=\"submit\" class=\"btn btn-primary\">Add</button></div>\n                                    </form>    \n                                  </div>                \n                              </div>\n                          </div>\n                          \n                      </div>\n                  </li>\n              </ul>\n            <br>\n            <div>\n              <p style=\"font-size: 17px; color:green\">Quiz Status : {{ quiz.status }}</p>\n              <div class=\"col view\"><button (click)=\"publish()\" class=\"btn btn-warning\">Publish</button></div>\n            </div>\n            <br>\n            <!-- <p style=\"font-size: 15px; color:red\">This quiz Can't be published. There is Question Wtih no correct answers given</p> -->\n        </div>    \n      </div> \n    </div>\n    <div *ngFor=\"let question of quiz_questions; let i = index\">\n      <app-question (questionEvent)=\"check_state($event)\" [question]=\"question\" [number]=\"i+1\" [quiz_status]=\"quiz.status\"></app-question>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -630,8 +630,9 @@ var QuestionComponent = /** @class */ (function () {
         this.questionService = questionService;
         this.answerService = answerService;
         this.index = 1;
-        this.hasCorrectAnswer = { hascorrect: false };
+        this.hasCorrectAnswer = { hasCorrect: false };
         this.role = this.userService.getUserPayload().role;
+        this.questionEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_6__["EventEmitter"]();
     }
     QuestionComponent.prototype.getAnswers = function () {
         var _this = this;
@@ -646,7 +647,8 @@ var QuestionComponent = /** @class */ (function () {
         var _this = this;
         this.questionService.hasCorrectAnswer(this.question._id).subscribe(function (res) {
             _this.hasCorrectAnswer = res;
-            console.log(_this.hasCorrectAnswer);
+            _this.fireEvent({ number: _this.number, correct: res });
+            // console.log(this.hasCorrectAnswer)
         }, function (err) {
             console.log(err);
         });
@@ -692,6 +694,9 @@ var QuestionComponent = /** @class */ (function () {
             }
         });
     };
+    QuestionComponent.prototype.fireEvent = function (question_state) {
+        this.questionEvent.emit(question_state);
+    };
     QuestionComponent.prototype.ngOnInit = function () {
         this.hasCorrect();
         this.getAnswers();
@@ -708,6 +713,10 @@ var QuestionComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_6__["Input"])(),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", String)
     ], QuestionComponent.prototype, "quiz_status", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_6__["Output"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+    ], QuestionComponent.prototype, "questionEvent", void 0);
     QuestionComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_6__["Component"])({
             selector: 'app-question',
@@ -793,7 +802,7 @@ var QuizComponent = /** @class */ (function () {
         var _this = this;
         this.quizService.findQuiz(this.quiz_id).subscribe(function (res) {
             _this.quiz = res;
-            console.log(res);
+            // console.log(res)
         }, function (err) {
             _this.errMsg = err.error.message;
         });
@@ -802,7 +811,7 @@ var QuizComponent = /** @class */ (function () {
         var _this = this;
         this.questionService.getQuizQuestions(this.quiz_id).subscribe(function (res) {
             _this.quiz_questions = res;
-            console.log(res);
+            // console.log(res)
         }, function (err) {
             _this.router.navigate(["**"]);
             _this.errMsg = err.error.message;
@@ -835,22 +844,30 @@ var QuizComponent = /** @class */ (function () {
         var _this = this;
         var sure = confirm('Once You publish This Quiz You Will not be able to Edit it\nDo you want to publish ?');
         if (sure) {
-            // this.quiz_questions.forEach( (question) => {
-            //     this.questionhasCorrect(question);
-            // });
-            // console.log(this.canPublish.length)
-            // let check = true;
-            // for(let i=0;i< this.canPublish.length; i++) {
-            //   console.log(this.canPublish[i].hasCorrect)
-            // }
-            // return;
-            this.quizService.publishQuiz(this.quiz_id).subscribe(function (res) {
-                _this.quiz = res;
-            }, function (err) {
-                console.log(err.error);
-                _this.errMsg = err.error;
+            var publishable_1 = true;
+            this.canPublish.forEach(function (elm) {
+                if (elm.hasCorrect === false) {
+                    publishable_1 = false;
+                }
             });
+            console.log(publishable_1);
+            if (!publishable_1) {
+                alert('Please Make Sure that Every Question has at least 1 correct answer');
+                return;
+            }
+            else {
+                this.quizService.publishQuiz(this.quiz_id).subscribe(function (res) {
+                    _this.quiz = res;
+                }, function (err) {
+                    console.log(err.error);
+                    alert(err.error.message);
+                });
+            }
         }
+    };
+    QuizComponent.prototype.check_state = function (is_correct) {
+        this.canPublish[is_correct.number - 1] = is_correct.correct;
+        console.log(this.canPublish);
     };
     QuizComponent.prototype.Logout = function () {
         this.userService.deleteToken();
@@ -1496,7 +1513,7 @@ __webpack_require__.r(__webpack_exports__);
 // The list of file replacements can be found in `angular.json`.
 var environment = {
     production: false,
-    // apiBaseUrl: "http://localhost:8000"
+    //apiBaseUrl: "http://localhost:8000",
     apiBaseUrl: "https://quiz-3d-app.herokuapp.com",
 };
 /*

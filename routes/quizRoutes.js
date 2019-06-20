@@ -91,24 +91,31 @@ quizRoutes.get("/:id", (req, res) => {
 
 quizRoutes.put("/updateStatus", (req, res, next) => {
     console.log(req.body);
-    quizSchema.update({ _id: req.body.quiz_id },
-        {status: "published"} , err => {
-            if (!err) {
-                quizSchema.findOne({_id:req.body.quiz_id}, (err, result) => {
+    questionSchema.findOne({quiz_id: req.body.quiz_id}, (err, question) => {
+        if(!question) {
+            res.status(403).json({ message: 'Quiz must have at least one question'});
+        }
+        else {
+            quizSchema.update({ _id: req.body.quiz_id },
+                {status: "published"} , err => {
                     if (!err) {
-                        res.status(200).send(result);
+                        quizSchema.findOne({_id:req.body.quiz_id}, (err, result) => {
+                            if (!err) {
+                                res.status(200).send(result);
+                            }
+                            else {
+                                console.log(err);
+                                return next(err);
+                            }
+                        })
                     }
                     else {
                         console.log(err);
                         return next(err);
                     }
                 })
-            }
-            else {
-                console.log(err);
-                return next(err);
-            }
-        })
+        }
+    })
 })
 
 quizRoutes.delete("/:id", (req,res,next) => {
