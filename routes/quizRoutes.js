@@ -24,6 +24,19 @@ quizRoutes.get("/allPublished", (req, res) => {
     })
 })
 
+//Get Quiz By ID 
+quizRoutes.get("/:id", (req, res) => {
+    quizSchema.findById(req.params.id, (err, result) => {
+        if (!err) {
+            res.status(200).send(result);
+        }
+        else {
+            console.log(err);
+            return res.send(err);
+        }
+    })
+})
+
 // use teacher Middleware to prevent student accounts from using quiz api
 quizRoutes.use(check_teacher)
 
@@ -76,18 +89,7 @@ quizRoutes.get("/published", (req, res) => {
     })
 })
 
-//Get Quiz By ID 
-quizRoutes.get("/:id", (req, res) => {
-    quizSchema.findById(req.params.id, (err, result) => {
-        if (!err) {
-            res.status(200).send(result);
-        }
-        else {
-            console.log(err);
-            return res.send(err);
-        }
-    })
-})
+
 
 quizRoutes.put("/updateStatus", (req, res, next) => {
     console.log(req.body);
