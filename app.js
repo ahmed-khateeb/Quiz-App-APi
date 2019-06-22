@@ -4,6 +4,7 @@ const express = require("express"),
     bodyParser = require("body-parser"),
     morgan = require("morgan"),
     mongoose = require("mongoose"),
+
     // Routes
     userRoutes = require("./routes/userRoutes"),
     quizRoutes = require("./routes/quizRoutes"),
@@ -14,8 +15,8 @@ const express = require("express"),
     server = express();
 
     mongoose.connect(
-        "mongodb://localhost:27017/3D_Quiz",
-        //"mongodb+srv://ahmad:123_456@cluster0-zcfdh.mongodb.net/test?retryWrites=true&w=majority",
+        //"mongodb://localhost:27017/3D_Quiz",
+        "mongodb+srv://ahmad:123_456@cluster0-zcfdh.mongodb.net/test?retryWrites=true&w=majority",
         { useNewUrlParser: true },
         error => {
             if (error) {
