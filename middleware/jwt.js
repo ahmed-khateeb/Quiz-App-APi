@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 authenticate = (req, res, next) => {
     try {
-        // console.log(req.headers);
+        console.log(req.headers);
         const token = req.headers.authorization.split(" ")[1];
         const decoded = jwt.verify(token, "3D Diagnostix")
         req._id = decoded._id;

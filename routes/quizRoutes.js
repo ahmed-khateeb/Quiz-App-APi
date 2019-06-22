@@ -8,8 +8,11 @@ let quizSchema = require('../models/quiz.model'),
 
 let check_teacher = require("../middleware/teacher");
 
-// Get published Quizzes for students
+// Authentication midleware
+quizRoutes.use(authenticate);
 
+
+// Get published Quizzes for students
 quizRoutes.get("/allPublished", (req, res) => {
     quizSchema.find({status: "published"}).populate('user_id')
     .exec((err, result) => {

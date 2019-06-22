@@ -1,16 +1,16 @@
 let express = require("express"),
-
     questionRoutes = express.Router();
 
 // =============================================
 
 let questionSchema = require('../models/question.model'),
-    answerSchema = require('../models/answer.model'),
-
-    answerRouter = require("./answerRoutes");
+    answerSchema = require('../models/answer.model')
 
 let check_quiz = require("../middleware/quiz");
 
+
+// Authentication midleware
+questionRoutes.use(authenticate);
 
 questionRoutes.get("/:id/hasCorrectAnswer", (req, res) => {
     answerSchema.findOne({question_id: req.params.id, is_correct: true},

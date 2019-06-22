@@ -1,6 +1,4 @@
 let express = require("express"),
-
-// add Mergeparams to access params from the parent router
     answerRoutes = express.Router();
 
 // =============================================
@@ -11,6 +9,8 @@ let check_question = require("../middleware/question"),
     has_correct_answer = require("../middleware/hasCorrectAnswer");
 
 
+// Authentication midleware
+answerRoutes.use(authenticate);
 
 answerRoutes.delete("/:id", (req, res) => {
     answerSchema.findById(req.params.id, (err, answer) => {

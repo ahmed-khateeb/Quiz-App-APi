@@ -14,8 +14,8 @@ const express = require("express"),
     server = express();
 
     mongoose.connect(
-        //"mongodb://localhost:27017/3D_Quiz",
-        "mongodb+srv://ahmad:123_456@cluster0-zcfdh.mongodb.net/test?retryWrites=true&w=majority",
+        "mongodb://localhost:27017/3D_Quiz",
+        //"mongodb+srv://ahmad:123_456@cluster0-zcfdh.mongodb.net/test?retryWrites=true&w=majority",
         { useNewUrlParser: true },
         error => {
             if (error) {
@@ -27,22 +27,18 @@ mongoose.set('useCreateIndex', true);
 
 server.use(morgan("short"));
 server.use(cors({ origin: true }));
-server.use(bodyParser.json());
 
 //Use Angular Builded Part 
 server.use(express.static(path.join(__dirname,"dist")));
 
+server.use(bodyParser.urlencoded({extended:true}));
+server.use(bodyParser.json());
 
-server.use("/user", userRoutes);
+server.use("/api/user", userRoutes);
 
-
-// Authentication midleware
-server.use(authenticate);
-
-
-server.use("/quiz", quizRoutes);
-server.use("/questions", questionRouter);
-server.use("/answers", answerRouter);
+server.use("/api/quiz", quizRoutes);
+server.use("/api/questions", questionRouter);
+server.use("/api/answers", answerRouter);
 server.use((err, req, res, next) => {
     console.log(err);
     if (err.name === 'ValidationError') {
